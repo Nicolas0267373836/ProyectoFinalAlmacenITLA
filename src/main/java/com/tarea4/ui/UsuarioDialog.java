@@ -121,7 +121,16 @@ public class UsuarioDialog extends JDialog {
             principal.cargarTabla();
             dispose();
         } catch (Exception error) {
-            JOptionPane.showMessageDialog(this, "No se pudo guardar. Revise que usuario y correo no estén repetidos.");
+            JOptionPane.showMessageDialog(this,
+                    "No se pudo guardar.\nDetalle: " + obtenerDetalle(error));
         }
+    }
+
+    private String obtenerDetalle(Exception error) {
+        Throwable causa = error;
+        while (causa.getCause() != null) {
+            causa = causa.getCause();
+        }
+        return causa.getMessage() == null ? error.getMessage() : causa.getMessage();
     }
 }

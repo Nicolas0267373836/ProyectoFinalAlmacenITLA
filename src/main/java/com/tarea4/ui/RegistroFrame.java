@@ -101,11 +101,20 @@ public class RegistroFrame extends JFrame {
             JOptionPane.showMessageDialog(this, "Usuario registrado correctamente.");
             dispose();
         } catch (Exception error) {
-            JOptionPane.showMessageDialog(this, "No se pudo registrar. El usuario o correo puede estar repetido.");
+            JOptionPane.showMessageDialog(this,
+                    "No se pudo registrar.\nDetalle: " + obtenerDetalle(error));
         }
     }
 
     private void mensaje(String campo) {
         JOptionPane.showMessageDialog(this, "El campo " + campo + " es obligatorio.");
+    }
+
+    private String obtenerDetalle(Exception error) {
+        Throwable causa = error;
+        while (causa.getCause() != null) {
+            causa = causa.getCause();
+        }
+        return causa.getMessage() == null ? error.getMessage() : causa.getMessage();
     }
 }
