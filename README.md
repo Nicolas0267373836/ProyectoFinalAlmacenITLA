@@ -33,7 +33,7 @@ Los comentarios en el código identifican los pilares y patrones usados.
 db.password=TU_CONTRASENA
 ```
 
-3. Ejecuta `database/schema.sql` en la base remota `almacenitlafinal`. El archivo crea las tablas `usuarios_20252437` y `productos_20252437`, por lo que no mezcla tus datos con los de otros estudiantes.
+3. Al abrir la aplicacion, el sistema crea automaticamente las tablas `usuarios_20252437` y `productos_20252437` si no existen. Tambien se deja `database/schema.sql` como respaldo por si el docente quiere revisar la estructura de la base de datos.
 
 No subas `database.properties` a GitHub; ya está incluido en `.gitignore`.
 

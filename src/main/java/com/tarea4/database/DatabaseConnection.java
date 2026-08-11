@@ -5,6 +5,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.Statement;
 import java.util.Properties;
 
 /* Singleton: una sola clase administra la conexión a MySQL. */
@@ -14,6 +15,7 @@ public class DatabaseConnection {
     private String url;
     private String user;
     private String password;
+    private boolean tablasPreparadas;
 
     private DatabaseConnection() {
         try {
@@ -44,6 +46,49 @@ public class DatabaseConnection {
     }
 
     public Connection getConnection() throws Exception {
-        return DriverManager.getConnection(url, user, password);
+        Connection connection = DriverManager.getConnection(url, user, password);
+        try {
+            prepararTablas(connection);
+            return connection;
+        } catch (Exception error) {
+            connection.close();
+            throw error;
+        }
+    }
+
+    private synchronized void prepararTablas(Connection connection) throws Exception {
+        if (tablasPreparadas) {
+            return;
+        }
+
+        try (Statement statement = connection.createStatement()) {
+            statement.executeUpdate("CREATE TABLE IF NOT EXISTS usuarios_20252437 ("
+                    + "id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,"
+                    + "usuario VARCHAR(50) NOT NULL,"
+                    + "nombre VARCHAR(80) NOT NULL,"
+                    + "apellido VARCHAR(80) NOT NULL,"
+                    + "telefono VARCHAR(25) NOT NULL,"
+                    + "correo VARCHAR(120) NOT NULL,"
+                    + "password_hash VARCHAR(255) NOT NULL,"
+                    + "creado_en TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,"
+                    + "actualizado_en TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,"
+                    + "PRIMARY KEY (id),"
+                    + "CONSTRAINT uq_usuarios_20252437_usuario UNIQUE (usuario),"
+                    + "CONSTRAINT uq_usuarios_20252437_correo UNIQUE (correo)"
+                    + ") ENGINE=InnoDB");
+
+            statement.executeUpdate("CREATE TABLE IF NOT EXISTS productos_20252437 ("
+                    + "id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,"
+                    + "nombre VARCHAR(100) NOT NULL,"
+                    + "marca VARCHAR(80) NOT NULL,"
+                    + "categoria VARCHAR(80) NOT NULL,"
+                    + "precio DECIMAL(10,2) NOT NULL,"
+                    + "cantidad_disponible INT NOT NULL,"
+                    + "creado_en TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,"
+                    + "actualizado_en TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,"
+                    + "PRIMARY KEY (id)"
+                    + ") ENGINE=InnoDB");
+            tablasPreparadas = true;
+        }
     }
 }
