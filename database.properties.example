@@ -1,0 +1,4 @@
+# Copia este archivo como database.properties y completa la contraseña remota.
+db.url=jdbc:mysql://almacenitla-db-itla-3837.e.aivencloud.com:25037/almacenitlafinal?useSSL=true&requireSSL=true&verifyServerCertificate=false&serverTimezone=UTC&characterEncoding=UTF-8
+db.user=avnadmin
+db.password=
