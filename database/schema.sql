@@ -1,6 +1,5 @@
--- Proyecto Final - Sistema de Gestión de Productos de Almacén.
--- Ejecutar en la base remota almacenitlafinal. No crea otra base de datos.
--- Los sufijos evitan mezclar los datos de diferentes estudiantes.
+-- Tablas utilizadas por el sistema de usuarios y productos.
+-- Ejecutar este script dentro de la base de datos configurada.
 
 CREATE TABLE IF NOT EXISTS usuarios_20252437 (
     id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
