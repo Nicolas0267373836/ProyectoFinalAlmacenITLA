@@ -7,9 +7,11 @@ import javax.swing.SwingUtilities;
 
 public class App {
 
+    private static LoginFrame login;
+
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
-            LoginFrame login = new LoginFrame(DAOFactory.crearUsuarioDAO(), DAOFactory.crearProductoDAO());
+            login = new LoginFrame(DAOFactory.crearUsuarioDAO(), DAOFactory.crearProductoDAO());
             login.setVisible(true);
         });
     }
